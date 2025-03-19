@@ -3,7 +3,10 @@ name: CI/CD Prod Deployment
 on:
   push:
     branches:
-      - prod
+      - dev-environment
+    path-ignore:
+      - 'terraform/**'
+      - 'k8s/**'
 
 jobs:
   build-and-deploy-prod:
@@ -28,30 +31,33 @@ jobs:
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login ${{ secrets.DOCKER_REGISTRY }} -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Build & Push Docker Image Securely
+      - name: Build & Push Docker Image for Prod
         run: |
           DOCKER_IMAGE="${{ secrets.DOCKER_USERNAME }}/demo-javaapp"
-          IMAGE_TAG="dev-${{ github.sha }}"
+          IMAGE_TAG="prod-${{ github.sha }}"
           
-          docker build --file demo-javaapp/Dockerfile -t $DOCKER_IMAGE:$IMAGE_TAG demo-javaapp
-          docker tag $DOCKER_IMAGE:$IMAGE_TAG $DOCKER_IMAGE:latest
+          docker build -t $DOCKER_IMAGE:$IMAGE_TAG .
+          docker tag $DOCKER_IMAGE:$IMAGE_TAG $DOCKER_IMAGE:prod-latest
 
           docker push $DOCKER_IMAGE:$IMAGE_TAG
-          docker push $DOCKER_IMAGE:latest
+          docker push $DOCKER_IMAGE:prod-latest
 
-
-      - name: Set Up Helm
+      - name: Update Helm Chart Values
         run: |
-          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+          sed -i "s|repository:.*|repository: ${{ secrets.DOCKER_USERNAME }}/demo-javaapp|" helm/demo-javaapp/values-prod.yaml
+          sed -i "s|tag:.*|tag: dev-${{ github.sha }}|" helm/demo-javaapp/values-prod.yaml
 
-      - name: Push Helm Chart to Docker Hub Securely
+      - name: Commit and Push Helm Chart Updates
         run: |
-          helm registry login ${{ secrets.DOCKER_REGISTRY }} -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          helm package helm/demo-javaapp
-          helm push demo-javaapp-*.tgz oci://${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_USERNAME }}
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
 
-      - name: Deploy Helm Chart to Prod Kubernetes
-        run: |
-          helm upgrade --install demo-app oci://${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/demo-javaapp \
-            --version $(grep 'version:' helm/demo-javaapp/Chart.yaml | awk '{print $2}') \
-            -f helm/demo-javaapp/values-prod.yaml
+          git add helm/demo-javaapp/values-prod.yaml
+          git diff --cached --quiet || (git commit -m "chore: update Helm chart image tag to dev-${{ github.sha }}" && git push origin dev-environment)
+
+ 
+      - name: Lint Helm Chart
+        run: helm lint helm/demo-javaapp
+
+      - name: Deploy Helm Chart to ArgoCD
+        run: helm upgrade --install demo-javaapp helm/demo-javaapp -n prod
