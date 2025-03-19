@@ -1,0 +1,33 @@
+# Ignore everything outside the app
+../*
+
+# Ignore OS-related files
+.DS_Store
+
+# Ignore build artifacts
+target/
+*.jar
+*.war
+
+# Ignore Git repository & logs
+.git/
+.gitignore
+*.log
+
+# Ignore IDE and Editor configs
+.idea/
+.vscode/
+*.iml
+
+# Ignore Maven cache & wrapper
+.mvn/
+mvnw
+mvnw.cmd
+
+# Ignore Helm, Kubernetes, Terraform (not needed for Docker)
+../helm/
+../k8s/
+../terraform/
+
+# Ignore environment files
+.env
