@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: java-app
+  namespace: argocd
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: 'git@github.com:Sangam-ghimire/DevSecOps-FullJavaPipeline.git'
+    targetRevision: main
+    path: helm/demo-javaapp  # Deploys Helm Chart from this folder
+    helm:
+      valueFiles:
+        - values.yaml  #  Uses Helm values.yaml for deployment
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

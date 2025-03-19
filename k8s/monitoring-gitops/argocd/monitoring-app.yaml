@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-app
+  namespace: argocd
+spec:
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: 'git@github.com:Sangam-ghimire/DevSecOps-FullJavaPipeline.git'
+    targetRevision: main
+    path: k8s/monitoring-gitops/manifests  #only for monitoring manifest
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
