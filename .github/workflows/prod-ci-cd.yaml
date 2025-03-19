@@ -3,7 +3,7 @@ name: CI/CD Prod Deployment
 on:
   push:
     branches:
-      - dev-environment
+      - prod-environment
     path-ignore:
       - 'terraform/**'
       - 'k8s/**'
