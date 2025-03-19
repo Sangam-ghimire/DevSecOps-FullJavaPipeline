@@ -36,7 +36,7 @@ jobs:
           DOCKER_IMAGE="${{ secrets.DOCKER_USERNAME }}/demo-javaapp"
           IMAGE_TAG="prod-${{ github.sha }}"
           
-          docker build -t $DOCKER_IMAGE:$IMAGE_TAG -f demo-javaapp/Dockerfile demo-javaapp
+          docker build -t $DOCKER_IMAGE:$IMAGE_TAG -f ./demo-javaapp/Dockerfile ./demo-javaapp
           docker tag $DOCKER_IMAGE:$IMAGE_TAG $DOCKER_IMAGE:prod-latest
 
           docker push $DOCKER_IMAGE:$IMAGE_TAG
