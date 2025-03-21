@@ -36,3 +36,14 @@ startupProbe:
     port: http
   failureThreshold: 30
   periodSeconds: 5
+
+ingress:
+  enabled: false
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+

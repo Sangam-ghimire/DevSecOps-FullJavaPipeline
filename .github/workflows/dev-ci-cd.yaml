@@ -60,4 +60,4 @@ jobs:
           git diff --cached --quiet || (git commit -m "chore: update Helm chart image tag to dev-${{ github.sha }}" && git push origin dev-environment)
  
       - name: Lint Helm Chart
-        run: helm lint helm/demo-javaapp
+        run: helm lint helm/demo-javaapp -f helm/demo-javaapp/values-dev.yaml
