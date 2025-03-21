@@ -6,6 +6,7 @@ on:
       - prod-environment
     paths:
       - 'demo-javaapp/**'
+      - '.github/**'
 
 jobs:
   build-and-deploy-prod:

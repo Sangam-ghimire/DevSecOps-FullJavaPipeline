@@ -6,7 +6,7 @@ on:
       - dev-environment
     paths:
       - 'demo-javaapp/**'
-      - '.github/'
+      - '.github/**'
 
 
 jobs:
