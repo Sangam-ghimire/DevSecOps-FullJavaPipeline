@@ -83,4 +83,5 @@ module "argocd" {
   source = "../../modules/argocd"
   chart_version =  var.chart_version
   namespace = var.namespace
+  argocd_admin_password_hash = var.argocd_admin_password_hash
 }

@@ -85,3 +85,8 @@ variable "values_file_path" {
 variable "namespace" {
   type    = string
 }
+
+variable "argocd_admin_password_hash" {
+  description = "BCrypt-hashed admin password"
+  type        = string
+}

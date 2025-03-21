@@ -18,6 +18,13 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GH_TOKEN }}
+      
+      - name: Read App Version
+        id: version
+        run: |
+          VERSION=$(cat VERSION)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
 
       - name: Set Up JDK & Maven
         uses: actions/setup-java@v3
@@ -50,7 +57,7 @@ jobs:
       - name: Update Helm Chart Values
         run: |
           sed -i "s|repository:.*|repository: ${{ secrets.DOCKER_USERNAME }}/demo-javaapp|" helm/demo-javaapp/values-dev.yaml
-          sed -i "s|tag:.*|tag: dev-${{ github.sha }}|" helm/demo-javaapp/values-dev.yaml
+          sed -i "s|tag:.*|tag: dev-${{ steps.version.outpus.version }}|" helm/demo-javaapp/values-dev.yaml
  
       - name: Lint Helm Chart
         run: helm lint helm/demo-javaapp -f helm/demo-javaapp/values-dev.yaml
