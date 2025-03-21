@@ -5,7 +5,7 @@ resource "aws_eks_cluster" "eks" {
 
   vpc_config {
     subnet_ids = var.subnet_ids
-    endpoint_public_access = true  
+    endpoint_public_access = var.eks_end_point_public_access  
   }
 
   tags = {
@@ -19,12 +19,12 @@ resource "aws_eks_node_group" "eks_nodes" {
   node_group_name = "${var.cluster_name}-nodes"
   node_role_arn   = var.eks_node_role_arn  
   subnet_ids      = var.subnet_ids
-  instance_types  = ["t2.medium"]
+  instance_types  = var.instance_types
 
   scaling_config {
-    desired_size = 2
-    min_size     = 1
-    max_size     = 3
+    desired_size = var.desired_size
+    min_size     = var.min_size
+    max_size     = var.max_size
   }
 
  

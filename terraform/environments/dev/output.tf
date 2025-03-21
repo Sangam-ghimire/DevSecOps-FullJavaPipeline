@@ -22,3 +22,7 @@ output "eks_private_subnets" {
   description = "Private Subnet IDs used by EKS"
   value       = module.vpc.private_subnets
 }
+output "argocd_url" {
+  description = "URL to access Argo CD UI"
+  value       = "https://${module.argocd.argocd_server_hostname}"
+}

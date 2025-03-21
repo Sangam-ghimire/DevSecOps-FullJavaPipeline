@@ -60,6 +60,3 @@ jobs:
  
       - name: Lint Helm Chart
         run: helm lint helm/demo-javaapp
-
-      - name: Deploy Helm Chart to ArgoCD
-        run: helm upgrade --install demo-javaapp helm/demo-javaapp -n dev
