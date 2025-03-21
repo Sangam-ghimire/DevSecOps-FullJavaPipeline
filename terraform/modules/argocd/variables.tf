@@ -13,3 +13,8 @@ variable "values_file_path" {
   type        = string
   default     = "default-argocd-values.yaml"
 }
+
+variable "argocd_admin_password_hash" {
+  description = "BCrypt-hashed admin password"
+  type        = string
+}

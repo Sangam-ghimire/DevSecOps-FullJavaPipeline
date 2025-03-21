@@ -10,8 +10,8 @@ service:
   port: 80
   targetPort: 8080
 
-# env:
-#   SPRING_PROFILES_ACTIVE: prod
+serviceAccount:
+  create: true
 
 livenessProbe:
   enabled: true

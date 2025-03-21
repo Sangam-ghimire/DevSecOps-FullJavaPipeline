@@ -6,6 +6,10 @@ resource "helm_release" "argocd" {
   namespace        = var.namespace
   create_namespace = true
   values = [file("${path.module}/${var.values_file_path}")]
+  set {
+    name  = "configs.secret.argocdServerAdminPassword"
+    value = var.argocd_admin_password_hash
+  }
 }
 
 # Add this to fetch the Argo CD LoadBalancer info
