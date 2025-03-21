@@ -58,7 +58,7 @@ jobs:
       - name: Update Helm Chart Values
         run: |
           sed -i "s|repository:.*|repository: ${{ secrets.DOCKER_USERNAME }}/demo-javaapp|" helm/demo-javaapp/values-dev.yaml
-          sed -i "s|tag:.*|tag: dev-${{ steps.version.outpus.version }}|" helm/demo-javaapp/values-dev.yaml
+          sed -i "s|tag:.*|tag: dev-${{ steps.version.outputs.version }}|" helm/demo-javaapp/values-dev.yaml
       
       - name: Commit and Push Helm Chart Updates
         run: |
