@@ -47,7 +47,7 @@ jobs:
       - name: Update Helm Chart Values
         run: |
           sed -i "s|repository:.*|repository: ${{ secrets.DOCKER_USERNAME }}/demo-javaapp|" helm/demo-javaapp/values-prod.yaml
-          sed -i "s|tag:.*|tag: dev-${{ github.sha }}|" helm/demo-javaapp/values-prod.yaml
+          sed -i "s|tag:.*|tag: prod-${{ steps.version.output.version }}|" helm/demo-javaapp/values-prod.yaml
 
       - name: Commit and Push Helm Chart Updates
         run: |
@@ -55,7 +55,7 @@ jobs:
           git config user.name "GitHub Actions"
 
           git add helm/demo-javaapp/values-prod.yaml
-          git diff --cached --quiet || (git commit -m "chore: update Helm chart image tag to dev-${{ github.sha }}" && git push origin dev-environment)
+          git diff --cached --quiet || (git commit -m "chore: update Helm chart image tag to prod-${{ steps.version.output.version }}" && git push origin prod-environment)
 
  
       - name: Lint Helm Chart
