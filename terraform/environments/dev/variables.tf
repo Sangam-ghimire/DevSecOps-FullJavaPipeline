@@ -75,7 +75,7 @@ variable "kube_context" {
 
 variable "namespace" {
   type    = string
-  default = null
+  default = "argocd"
 }
 
 variable "chart_version" {
@@ -87,4 +87,9 @@ variable "values_file_path" {
   description = "Path to the Helm values YAML file for Argo CD"
   type        = string
   default = null
+}
+
+variable "argocd_admin_password_hash" {
+  description = "BCrypt-hashed admin password"
+  type        = string
 }

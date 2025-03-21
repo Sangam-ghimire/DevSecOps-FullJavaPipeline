@@ -14,3 +14,6 @@ desired_size = 2
 instance_types = [ "t3.medium" ]
 
 kube_context = "dev"
+
+//treeleafai
+argocd_admin_password_hash = "$2y$10$wi5u39BLhnxPjIXTl49Khuyy8ortKJazYtJm6HHgPRi8tvyyO4gm6"
