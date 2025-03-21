@@ -8,7 +8,6 @@ on:
       - 'demo-javaapp/**'
       - '.github/**'
 
-
 jobs:
   build-and-deploy-dev:
     runs-on: ubuntu-latest
@@ -20,12 +19,21 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GH_TOKEN }}
       
-      - name: Read App Version
-        id: version
+      - name: Read & Bump App Version
+        id: bump
         run: |
-          VERSION=$(cat VERSION)
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          CURRENT_VERSION=$(cat VERSION)
+          
+          BASE_VERSION=$(echo "$CURRENT_VERSION" | sed 's/-.*//')
+          MAJOR=$(echo $BASE_VERSION | cut -d. -f1)
+          MINOR=$(echo $BASE_VERSION | cut -d. -f2)
+          PATCH=$(echo $BASE_VERSION | cut -d. -f3)
+          
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
 
+          echo "$NEW_VERSION" > VERSION
+          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Set Up JDK & Maven
         uses: actions/setup-java@v3
@@ -46,27 +54,28 @@ jobs:
 
       - name: Build & Push Docker Image for Dev
         run: |
+          VERSION="dev-${{ steps.bump.outputs.new_version }}"
           DOCKER_IMAGE="${{ secrets.DOCKER_USERNAME }}/demo-javaapp"
-          IMAGE_TAG="dev-${{ github.sha }}"
-          
-          docker build -t $DOCKER_IMAGE:$IMAGE_TAG -f ./demo-javaapp/Dockerfile ./demo-javaapp
-          docker tag $DOCKER_IMAGE:$IMAGE_TAG $DOCKER_IMAGE:dev-latest
 
-          docker push $DOCKER_IMAGE:$IMAGE_TAG
+          docker build -t $DOCKER_IMAGE:$VERSION -f ./demo-javaapp/Dockerfile ./demo-javaapp
+          docker tag $DOCKER_IMAGE:$VERSION $DOCKER_IMAGE:dev-latest
+
+          docker push $DOCKER_IMAGE:$VERSION
           docker push $DOCKER_IMAGE:dev-latest
 
       - name: Update Helm Chart Values
         run: |
+          VERSION="dev-${{ steps.bump.outputs.new_version }}"
           sed -i "s|repository:.*|repository: ${{ secrets.DOCKER_USERNAME }}/demo-javaapp|" helm/demo-javaapp/values-dev.yaml
-          sed -i "s|tag:.*|tag: dev-${{ steps.version.outputs.version }}|" helm/demo-javaapp/values-dev.yaml
+          sed -i "s|tag:.*|tag: $VERSION|" helm/demo-javaapp/values-dev.yaml
       
-      - name: Commit and Push Helm Chart Updates
+      - name: Commit and Push VERSION + Helm Chart Updates
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
-          git add helm/demo-javaapp/values-dev.yaml
-          git diff --cached --quiet || (git commit -m "chore: update Helm chart image tag to dev-${{ steps.version.output.version }}" && git push origin dev-environment)
+          git add VERSION helm/demo-javaapp/values-dev.yaml
+          git diff --cached --quiet || (git commit -m "chore: bump version to dev-${{ steps.bump.outputs.new_version }} and update Helm chart" && git push origin dev-environment)
       
       - name: Lint Helm Chart
         run: helm lint helm/demo-javaapp -f helm/demo-javaapp/values-dev.yaml
