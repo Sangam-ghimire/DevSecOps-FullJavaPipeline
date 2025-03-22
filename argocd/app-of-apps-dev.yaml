@@ -4,7 +4,7 @@ metadata:
   name: root-app-dev
   namespace: argocd
 spec:
-  project: java-demoapp-dev
+  project: default
   source:
     repoURL: https://github.com/sangam-ghimire/DevSecOps-FullJavaPipeline.git
     targetRevision: dev-environment
