@@ -7,8 +7,41 @@ grafana:
   dashboards:
     java-app:
       json: |
-        {{ .Files.Get "infra/monitoring/grafana-dashboard/java-app-dashboard.json" | indent 8 }}
-
+        {
+          "title": "JavaApp - Logs & CPU",
+          "uid": "javaapp-logs-cpu",
+          "timezone": "browser",
+          "panels": [
+            {
+              "type": "logs",
+              "title": "Logs - demo-javaapp",
+              "datasource": "Loki",
+              "targets": [
+                {
+                  "expr": "{app=\"demo-javaapp\"}"
+                }
+              ],
+              "gridPos": {
+                "h": 8, "w": 24, "x": 0, "y": 0
+              }
+            },
+            {
+              "type": "timeseries",
+              "title": "CPU Usage",
+              "datasource": "Prometheus",
+              "targets": [
+                {
+                  "expr": "sum(rate(container_cpu_usage_seconds_total{container!=\"\",pod=~\"demo-javaapp.*\"}[5m]))"
+                }
+              ],
+              "gridPos": {
+                "h": 8, "w": 24, "x": 0, "y": 8
+              }
+            }
+          ],
+          "schemaVersion": 30,
+          "version": 1
+        }
 
     datasources:
       enabled: true
