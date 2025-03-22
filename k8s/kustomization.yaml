@@ -1,2 +1,2 @@
 resources:
-  - namespaces/
+  - namespaces/dev/dev-namespace.yaml
