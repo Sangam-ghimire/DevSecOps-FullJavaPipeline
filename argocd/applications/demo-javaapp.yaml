@@ -15,7 +15,7 @@ spec:
     path: helm/demo-javaapp
     helm:
       valueFiles:
-        - helm/demo-javaapp/values-dev.yaml 
+        - values-dev.yaml 
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
