@@ -3,7 +3,8 @@ loki:
 
 promtail:
   enabled: true
-  serviceMonitor:
+  
+serviceMonitor:
     enabled: true
 
 grafana:
