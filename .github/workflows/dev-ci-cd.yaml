@@ -62,13 +62,28 @@ jobs:
           VERSION="dev-${{ steps.bump.outputs.new_version }}"
           sed -i "s|repository:.*|repository: ${{ secrets.DOCKER_USERNAME }}/demo-javaapp|" helm/demo-javaapp/values-dev.yaml
           sed -i "s|tag:.*|tag: $VERSION|" helm/demo-javaapp/values-dev.yaml
+      
+      - name: Bump Helm Chart Version
+        run: |
+          CHART_FILE="helm/demo-javaapp/Chart.yaml"
+
+          CURRENT_CHART_VERSION=$(grep '^version:' "$CHART_FILE" | awk '{print $2}')
+          BASE_CHART_VERSION=$(echo "$CURRENT_CHART_VERSION" | sed 's/-.*//')
+          MAJOR=$(echo $BASE_CHART_VERSION | cut -d. -f1)
+          MINOR=$(echo $BASE_CHART_VERSION | cut -d. -f2)
+          PATCH=$(echo $BASE_CHART_VERSION | cut -d. -f3)
+          NEW_PATCH=$((PATCH + 1))
+          NEW_CHART_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+
+          # Update Chart.yaml
+          sed -i "s/^version: .*/version: $NEW_CHART_VERSION/" "$CHART_FILE"
 
       - name: Commit and Push VERSION + Helm Chart Updates
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-          git add VERSION helm/demo-javaapp/values-dev.yaml
+          git add VERSION helm/demo-javaapp/values-dev.yaml helm/demo-javaapp/Chart.yaml
           git diff --cached --quiet || (git commit -m "chore: bump version to dev-${{ steps.bump.outputs.new_version }} and update Helm chart [skip ci]" && git push origin dev-environment)
 
       - name: Lint Helm Chart
