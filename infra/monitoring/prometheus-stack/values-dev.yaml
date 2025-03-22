@@ -72,3 +72,6 @@ prometheus:
 
 serviceMonitors:
   enabled: true
+
+prometheus-node-exporter:
+  hostPort: false
