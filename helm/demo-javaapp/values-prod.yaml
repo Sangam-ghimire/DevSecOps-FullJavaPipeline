@@ -2,8 +2,8 @@
 replicaCount: 1
 
 image:
-  repository: sangamghimire/demo-javaapp-optimized
-  tag: prod-1.0.0
+  repository: sangamghimire/demo-javaapp
+  tag: prod-1.0.35
   pullPolicy: Always
 
 service:
