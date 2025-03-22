@@ -1,2 +1,4 @@
 resources:
   - namespaces/dev/dev-namespace.yaml
+  - namespaces/prod/prod-namespace.yaml
+
