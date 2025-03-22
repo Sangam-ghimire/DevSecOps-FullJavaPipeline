@@ -8,17 +8,17 @@ metadata:
     argocd.argoproj.io/manifest-generate-paths: helm/demo-javaapp
     # argocd.argoproj.io/sync-options: CreateNamespace=true 
 spec:
-  project: default
+  project: demo-java-app-prod
   source:
     repoURL: https://github.com/Sangam-ghimire/DevSecOps-FullJavaPipeline.git
-    targetRevision: dev-environment
+    targetRevision: prod-environment
     path: helm/demo-javaapp
     helm:
       valueFiles:
-        - values-dev.yaml 
+        - values-prod.yaml 
   destination:
     server: https://kubernetes.default.svc
-    namespace: dev
+    namespace: prod
   syncPolicy:
     automated:
       prune: true

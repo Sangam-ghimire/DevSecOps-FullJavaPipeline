@@ -1,4 +1,4 @@
-replicaCount: 3
+replicaCount: 1
 
 image:
   repository: sangamghimire/demo-javaapp
@@ -6,8 +6,8 @@ image:
   pullPolicy: Always
 
 service:
-  type: LoadBalancer
-  port: 80
+  type: NodePort
+  port: 8080
   targetPort: 8080
 
 serviceAccount:

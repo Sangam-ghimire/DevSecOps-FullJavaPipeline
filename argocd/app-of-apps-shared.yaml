@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-app-shared
+  namespace: argocd
+spec:
+  project: java-demoapp
+  source:
+    repoURL: https://github.com/sangam-ghimire/DevSecOps-FullJavaPipeline.git
+    targetRevision: main
+    path: argocd/applications/shared   
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

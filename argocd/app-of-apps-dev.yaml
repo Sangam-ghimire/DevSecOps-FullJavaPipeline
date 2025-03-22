@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-app
+  name: root-app-dev
   namespace: argocd
 spec:
-  project: default
+  project: java-demoapp-dev
   source:
     repoURL: https://github.com/sangam-ghimire/DevSecOps-FullJavaPipeline.git
     targetRevision: dev-environment
-    path: argocd/applications   
+    path: argocd/applications/dev   
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

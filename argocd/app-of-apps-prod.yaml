@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-app-prod
+  namespace: argocd
+spec:
+  project: java-demoapp-prod
+  source:
+    repoURL: https://github.com/sangam-ghimire/DevSecOps-FullJavaPipeline.git
+    targetRevision: prod-environment
+    path: argocd/applications/prod   
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
