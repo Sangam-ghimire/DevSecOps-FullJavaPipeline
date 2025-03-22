@@ -10,3 +10,13 @@ prometheus:
 
 serviceMonitors:
   enabled: true
+
+grafana:
+  dashboards:
+    default:
+      example:
+        json: |
+          {
+            "title": "Prod-Dashboard",
+            ...
+          }
