@@ -1,130 +1,35 @@
 {
-    "annotations": {
-      "list": [
+  "id": null,
+  "title": "JavaApp - Logs & CPU",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "CPU Usage (millicores)",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+      "targets": [
         {
-          "builtIn": 1,
-          "type": "dashboard",
-          "name": "Annotations & Alerts",
-          "enable": true,
-          "hide": true
+          "expr": "rate(container_cpu_usage_seconds_total{namespace=\"dev\", container=\"demo-javaapp\"}[2m]) * 1000",
+          "legendFormat": "{{ pod }}",
+          "refId": "A"
         }
-      ]
+      ],
+      "datasource": "Prometheus"
     },
-    "editable": true,
-    "gnetId": null,
-    "graphTooltip": 1,
-    "iteration": 1657128467913,
-    "panels": [
-      {
-        "datasource": "Prometheus",
-        "fieldConfig": {
-          "defaults": {
-            "unit": "percent"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 0
-        },
-        "id": 1,
-        "options": {
-          "reduceOptions": {
-            "calcs": ["avg"],
-            "fields": "",
-            "values": false
-          }
-        },
-        "targets": [
-          {
-            "expr": "jvm_memory_used_bytes / jvm_memory_max_bytes * 100",
-            "legendFormat": "Memory Usage %",
-            "refId": "A"
-          }
-        ],
-        "title": "JVM Memory Usage (%)",
-        "type": "timeseries"
-      },
-      {
-        "datasource": "Prometheus",
-        "fieldConfig": {
-          "defaults": {
-            "unit": "reqps"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 0
-        },
-        "id": 2,
-        "options": {
-          "reduceOptions": {
-            "calcs": ["rate"],
-            "fields": "",
-            "values": false
-          }
-        },
-        "targets": [
-          {
-            "expr": "rate(http_server_requests_seconds_count[1m])",
-            "legendFormat": "Requests/sec",
-            "refId": "B"
-          }
-        ],
-        "title": "HTTP Request Rate",
-        "type": "timeseries"
-      },
-      {
-        "datasource": "Prometheus",
-        "fieldConfig": {
-          "defaults": {
-            "unit": "s"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 24,
-          "x": 0,
-          "y": 8
-        },
-        "id": 3,
-        "options": {
-          "reduceOptions": {
-            "calcs": ["avg"],
-            "fields": "",
-            "values": false
-          }
-        },
-        "targets": [
-          {
-            "expr": "rate(http_server_requests_seconds_sum[1m]) / rate(http_server_requests_seconds_count[1m])",
-            "legendFormat": "Avg Request Duration",
-            "refId": "C"
-          }
-        ],
-        "title": "HTTP Average Response Time",
-        "type": "timeseries"
-      }
-    ],
-    "refresh": "30s",
-    "schemaVersion": 37,
-    "style": "dark",
-    "tags": ["spring", "java", "devops"],
-    "templating": {
-      "list": []
-    },
-    "time": {
-      "from": "now-15m",
-      "to": "now"
-    },
-    "title": "Java Application Overview",
-    "uid": "java-app-dashboard",
-    "version": 1
-  }
-  
+    {
+      "type": "logs",
+      "title": "Application Logs",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "{app=\"demo-javaapp\"}",
+          "refId": "B"
+        }
+      ],
+      "datasource": "Loki"
+    }
+  ],
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "5s"
+}

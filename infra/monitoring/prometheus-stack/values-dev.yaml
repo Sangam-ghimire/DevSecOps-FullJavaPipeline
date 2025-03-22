@@ -4,15 +4,15 @@ grafana:
   service:
     type: LoadBalancer
 
-  sidecar:
-    dashboards:
-      enabled: true
-      label: grafana_dashboard
-      labelValue: "1"
+  dashboards:
+    java-app:
+      json: |
+        {{ .Files.Get "infra/monitoring/grafana-dashboard/java-app-dashboard.json" | indent 8 }}
+
 
     datasources:
       enabled: true
-      
+
     additionalDataSources:
     - name: Loki
       type: loki
