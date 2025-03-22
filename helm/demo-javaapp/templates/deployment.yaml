@@ -12,7 +12,7 @@ spec:
       labels:
         app: {{ .Release.Name }}
       annotations:
-        image-tag: "{{ .Values.image.tag }}"
+        checksum/image: "{{ .Values.image.tag | sha256sum }}"
     spec:
       containers:
         - name: demo-javaapp
