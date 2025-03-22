@@ -17,6 +17,7 @@ spec:
       containers:
         - name: demo-javaapp
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
           ports:
             - containerPort: {{ .Values.service.targetPort }}
 
