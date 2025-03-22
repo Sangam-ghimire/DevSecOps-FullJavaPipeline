@@ -43,8 +43,14 @@ grafana:
           "version": 1
         }
 
+  datasources:
+    enabled: true
     datasources:
-      enabled: true
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus-stack-dev-kube-prometheus.dev-monitoring-logging.svc.cluster.local:9090
+        access: proxy
+        isDefault: true
 
     additionalDataSources:
     - name: Loki
