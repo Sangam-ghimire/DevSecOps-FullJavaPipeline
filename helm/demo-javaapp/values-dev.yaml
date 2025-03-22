@@ -14,26 +14,23 @@ serviceAccount:
   create: true
 
 livenessProbe:
-  enabled: true
   httpGet:
-    path: /healthz
-    port: http
+    path: /actuator/health
+    port: 8080
   initialDelaySeconds: 5
   periodSeconds: 10
 
 readinessProbe:
-  enabled: true
   httpGet:
-    path: /readyz
-    port: http
+    path: /actuator/health
+    port: 8080
   initialDelaySeconds: 3
   periodSeconds: 5
 
 startupProbe:
-  enabled: true
   httpGet:
-    path: /startup
-    port: http
+    path: /actuator/health
+    port: 8080
   failureThreshold: 30
   periodSeconds: 5
 
