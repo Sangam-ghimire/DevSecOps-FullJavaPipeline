@@ -46,4 +46,6 @@ autoscaling:
   maxReplicas: 3
   targetCPUUtilizationPercentage: 80
 
+namespace: dev
+
 
