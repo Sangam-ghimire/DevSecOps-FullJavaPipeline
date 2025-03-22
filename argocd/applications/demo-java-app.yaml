@@ -4,15 +4,15 @@ metadata:
   name: demo-javaapp
   namespace: argocd
   annotations:
-  argocd.argoproj.io/managed-by: argocd
-  argocd.argoproj.io/manifest-generate-paths: helm/demo-javaapp
-  argocd.argoproj.io/sync-options: CreateNamespace=true 
+    argocd.argoproj.io/managed-by: argocd
+    argocd.argoproj.io/manifest-generate-paths: helm/demo-javaapp
+    argocd.argoproj.io/sync-options: CreateNamespace=true 
 spec:
   project: default
   source:
     repoURL: https://github.com/Sangam-ghimire/DevSecOps-FullJavaPipeline.git
     targetRevision: dev-environment
-    path: helm/demo-javaapp          # <--- relative path to the Helm chart
+    path: helm/demo-javaapp
     helm:
       valueFiles:
         - values-dev.yaml
