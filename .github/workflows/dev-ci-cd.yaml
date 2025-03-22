@@ -6,7 +6,6 @@ on:
       - dev-environment
     paths:
       - 'demo-javaapp/**'            # App source code
-      - 'helm/demo-javaapp/**'       # Helm chart & values
       - '.github/**'                 # CI configs
 
 jobs:
@@ -19,14 +18,6 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GH_TOKEN }}
-
-      - name: Exit if last commit was from GitHub Actions (prevent loop)
-        run: |
-          AUTHOR=$(git log -1 --pretty=format:'%an')
-          if [ "$AUTHOR" = "GitHub Actions" ]; then
-            echo "Last commit was from CI. Exiting to avoid loop."
-            exit 0
-          fi
 
       - name: Read & Bump App Version
         id: bump
@@ -64,10 +55,7 @@ jobs:
           DOCKER_IMAGE="${{ secrets.DOCKER_USERNAME }}/demo-javaapp"
 
           docker build -t $DOCKER_IMAGE:$VERSION -f ./demo-javaapp/Dockerfile ./demo-javaapp
-          docker tag $DOCKER_IMAGE:$VERSION $DOCKER_IMAGE:dev-latest
-
           docker push $DOCKER_IMAGE:$VERSION
-          docker push $DOCKER_IMAGE:dev-latest
 
       - name: Update Helm Chart Values
         run: |
@@ -81,7 +69,7 @@ jobs:
           git config user.email "actions@github.com"
 
           git add VERSION helm/demo-javaapp/values-dev.yaml
-          git diff --cached --quiet || (git commit -m "chore: bump version to dev-${{ steps.bump.outputs.new_version }} and update Helm chart" && git push origin dev-environment)
+          git diff --cached --quiet || (git commit -m "chore: bump version to dev-${{ steps.bump.outputs.new_version }} and update Helm chart [skip ci]" && git push origin dev-environment)
 
       - name: Lint Helm Chart
         run: helm lint helm/demo-javaapp -f helm/demo-javaapp/values-dev.yaml
