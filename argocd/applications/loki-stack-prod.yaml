@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/Sangam-ghimire/DevSecOps-FullJavaPipeline.git
-    targetRevision: dev-environment
+    targetRevision: prod-environment
     path: infra/logging/loki-stack
     helm:
       valueFiles:
