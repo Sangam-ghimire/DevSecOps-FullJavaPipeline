@@ -1,0 +1,11 @@
+loki:
+  enabled: true
+
+promtail:
+  enabled: true
+
+serviceMonitor:
+    enabled: true
+
+grafana:
+  enabled: false  # Already handled by Prometheus stack

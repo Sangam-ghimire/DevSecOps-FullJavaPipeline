@@ -2,7 +2,7 @@ replicaCount: 3
 
 image:
   repository: sangamghimire/demo-javaapp
-  tag: latest
+  tag: dev-1.0.34
   pullPolicy: Always
 
 service:
@@ -10,29 +10,41 @@ service:
   port: 80
   targetPort: 8080
 
-# env:
-#   SPRING_PROFILES_ACTIVE: prod
+serviceAccount:
+  create: true
 
 livenessProbe:
-  enabled: true
   httpGet:
-    path: /healthz
-    port: http
+    path: /actuator/health
+    port: 8080
   initialDelaySeconds: 5
   periodSeconds: 10
 
 readinessProbe:
-  enabled: true
   httpGet:
-    path: /readyz
-    port: http
+    path: /actuator/health
+    port: 8080
   initialDelaySeconds: 3
   periodSeconds: 5
 
 startupProbe:
-  enabled: true
   httpGet:
-    path: /startup
-    port: http
+    path: /actuator/health
+    port: 8080
   failureThreshold: 30
   periodSeconds: 5
+
+ingress:
+  enabled: false
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+createNamespace: false
+namespace: dev
+
+
+

@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-stack-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    helm:
+      valueFiles:
+        - values-dev.yaml
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev-monitoring-logging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

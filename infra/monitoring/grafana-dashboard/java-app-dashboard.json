@@ -1,0 +1,35 @@
+{
+  "id": null,
+  "title": "JavaApp - Logs & CPU",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "CPU Usage (millicores)",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "rate(container_cpu_usage_seconds_total{namespace=\"dev\", container=\"demo-javaapp\"}[2m]) * 1000",
+          "legendFormat": "{{ pod }}",
+          "refId": "A"
+        }
+      ],
+      "datasource": "Prometheus"
+    },
+    {
+      "type": "logs",
+      "title": "Application Logs",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "{app=\"demo-javaapp\"}",
+          "refId": "B"
+        }
+      ],
+      "datasource": "Loki"
+    }
+  ],
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "5s"
+}

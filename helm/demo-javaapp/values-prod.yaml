@@ -3,7 +3,7 @@ replicaCount: 1
 
 image:
   repository: sangamghimire/demo-javaapp-optimized
-  tag: latest
+  tag: prod-1.0.0
   pullPolicy: Always
 
 service:
@@ -47,3 +47,7 @@ startupProbe:
     port: http
   failureThreshold: 30
   periodSeconds: 5
+
+createNamespace: false
+namespace: prod
+

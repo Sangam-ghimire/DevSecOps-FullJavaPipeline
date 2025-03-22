@@ -1,3 +1,13 @@
+variable "aws_region" {
+  description = "The aws region to be used"
+  type = string
+}
+
+variable "aws_profile" {
+  description = "The aws profile to be used for this project"
+  type = string
+}
+
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
@@ -25,5 +35,61 @@ variable "cluster_name" {
 
 variable "environment" {
   description = "Deployment environment (dev/prod)"
+  type        = string
+}
+
+variable "min_size" {
+  description = "The min number of nodes in eks cluster"
+  type = number
+  default = 1
+}
+
+variable "max_size" {
+  type = number
+  description = "The max number of nodes in eks cluster"
+  default = 3
+}
+
+variable "desired_size" {
+  type = number
+  description = "The desired number of nodes in eks cluster"
+  default = 3
+}
+
+variable "instance_types" {
+  description = "The List of desired instance type of eks cluster"
+  type = list(string)
+  default = ["t2.micro"]
+}
+
+variable "kubeconfig_path" {
+  description = "Path to the kubeconfig file for accessing the Kubernetes cluster"
+  type        = string
+  default     = "~/.kube/config"
+}
+
+variable "kube_context" {
+  description = "The name of the kubeconfig context to use"
+  type        = string
+}
+
+variable "namespace" {
+  type    = string
+  default = "argocd"
+}
+
+variable "chart_version" {
+  type    = string
+  default = null
+}
+
+variable "values_file_path" {
+  description = "Path to the Helm values YAML file for Argo CD"
+  type        = string
+  default = null
+}
+
+variable "argocd_admin_password_hash" {
+  description = "BCrypt-hashed admin password"
   type        = string
 }

@@ -1,0 +1,22 @@
+grafana:
+  enabled: true
+  adminPassword: "admin"  # You can secure this via Secret later
+  service:
+    type: LoadBalancer
+
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+
+serviceMonitors:
+  enabled: true
+
+grafana:
+  dashboards:
+    default:
+      example:
+        json: |
+          {
+            "title": "Prod-Dashboard",
+            ...
+          }

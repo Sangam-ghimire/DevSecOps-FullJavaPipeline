@@ -1,3 +1,40 @@
+terraform {
+  required_version = ">= 1.3.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.23"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.13"
+    }
+  }
+}
+
+provider "aws" {
+  region  = var.aws_region
+  profile = var.aws_profile
+}
+
+
+# Kubernetes Provider — connects Terraform to the correct K8s cluster
+provider "kubernetes" {
+  config_path    = var.kubeconfig_path       # Path to kubeconfig file
+  config_context = var.kube_context          # Context name (from 'kubectl config get-contexts')
+}
+
+# Helm Provider — installs charts into the same cluster as above
+provider "helm" {
+  kubernetes {
+    config_path    = var.kubeconfig_path
+    config_context = var.kube_context
+  }
+}
 data "aws_iam_policy" "terraform_policy" {
   name = "terraform-policy"
 }
@@ -5,6 +42,7 @@ data "aws_iam_policy" "terraform_policy" {
 data "aws_iam_policy" "existing_terraform_policy" {
   name = "terraform-policy"
 }
+
 
 module "iam" {
   source       = "../../modules/iam"
@@ -34,5 +72,16 @@ module "eks" {
   environment = var.environment
   subnet_ids   = module.vpc.private_subnets
   eks_role_arn    = module.iam.eks_role_arn       
-  eks_node_role_arn = module.iam.eks_node_role_arn 
+  eks_node_role_arn = module.iam.eks_node_role_arn
+  instance_types = var.instance_types
+  desired_size = var.desired_size
+  min_size = var.min_size
+  max_size = var.max_size
+}
+
+module "argocd" {
+  source = "../../modules/argocd"
+  chart_version =  var.chart_version
+  namespace = var.namespace
+  argocd_admin_password_hash = var.argocd_admin_password_hash
 }

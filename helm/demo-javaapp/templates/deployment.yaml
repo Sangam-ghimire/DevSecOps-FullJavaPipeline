@@ -11,13 +11,16 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}
+      annotations:
+        checksum/image: "{{ .Values.image.tag | sha256sum }}"
     spec:
       containers:
         - name: demo-javaapp
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
           ports:
             - containerPort: {{ .Values.service.targetPort }}
-          
+
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
