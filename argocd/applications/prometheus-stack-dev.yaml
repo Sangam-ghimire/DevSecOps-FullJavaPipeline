@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus-stack
+  name: prometheus-stack-dev
   namespace: argocd
 spec:
   project: default
@@ -14,7 +14,7 @@ spec:
         - values-dev.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: monitoring
+    namespace: dev-monitoring-logging
   syncPolicy:
     automated:
       prune: true
