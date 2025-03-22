@@ -1,4 +1,4 @@
-# Getting Started check update  version
+# Getting Started check update  version 1.0.6
 
 ### Reference Documentation
 For further reference, please consider the following sections:
