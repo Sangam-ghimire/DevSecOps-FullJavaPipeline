@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/Sangam-ghimire/DevSecOps-FullJavaPipeline.git
-    targetRevision: prod-environment
+    targetRevision: dev-environment
     path: infra/monitoring/prometheus-stack
     helm:
       valueFiles:
