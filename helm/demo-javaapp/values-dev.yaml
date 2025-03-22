@@ -2,7 +2,7 @@ replicaCount: 3
 
 image:
   repository: sangamghimire/demo-javaapp
-  tag: dev-1.0.4
+  tag: dev-1.0.5
   pullPolicy: Always
 
 service:
