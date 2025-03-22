@@ -6,15 +6,15 @@ image:
   pullPolicy: Always
 
 service:
-  type: NodePort
+  type: LoadBalancer
   port: 8080
   targetPort: 8080
 
 ingress:
-  enabled: true  # Set to true if using ingress in cloud
+  enabled: false  # Set to true if using ingress in cloud
 
 serviceAccount:
-  create: false  # Disable service account creation if not needed
+  create: true  # Disable service account creation if not needed
 
 autoscaling:
   enabled: true
