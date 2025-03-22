@@ -48,4 +48,6 @@ startupProbe:
   failureThreshold: 30
   periodSeconds: 5
 
-  namespace: prod
+createNamespace: false
+namespace: prod
+
