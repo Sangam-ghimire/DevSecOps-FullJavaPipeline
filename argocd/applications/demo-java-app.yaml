@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/managed-by: argocd
-    argocd.argoproj.io/manifest-generate-paths: helm/demo-javaapp
+    argocd.argoproj.io/manifest-generate-paths: helm/demo-java-app
     argocd.argoproj.io/sync-options: CreateNamespace=true 
 spec:
   project: default
