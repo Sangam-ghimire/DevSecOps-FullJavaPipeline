@@ -1,22 +1,27 @@
 grafana:
   enabled: true
-  adminPassword: "admin"  # You can secure this via Secret later
+  adminPassword: admin
   service:
     type: LoadBalancer
+
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+
+    datasources:
+      enabled: true
+
 
 prometheus:
   prometheusSpec:
     serviceMonitorSelectorNilUsesHelmValues: false
+    additionalScrapeConfigs:
+      - job_name: 'demo-javaapp'
+        metrics_path: /actuator/prometheus
+        static_configs:
+          - targets: ['demo-javaapp.dev.svc.cluster.local:8080']
 
 serviceMonitors:
   enabled: true
-
-grafana:
-  dashboards:
-    default:
-      example:
-        json: |
-          {
-            "title": "Prod-Dashboard",
-            ...
-          }

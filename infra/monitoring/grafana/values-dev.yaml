@@ -1,0 +1,15 @@
+grafana:
+  sidecar:
+    dashboards:
+      enabled: true
+      searchNamespace: ALL
+
+  dashboardsProvider:
+    enabled: true
+    configMaps:
+      java-dashboard: "java-app-dashboard"
+
+  dashboardsConfigMaps:
+    java-app-dashboard:
+      java-app-dashboard.json: |-
+        {{ .Files.Get "infra/monitoring/grafana-dashboards/java-app-dashboard.json" | indent 8 }}
