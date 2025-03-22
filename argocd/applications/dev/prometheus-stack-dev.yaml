@@ -6,11 +6,12 @@ metadata:
 spec:
   project: default
   source:
+    repoURL: https://github.com/Sangam-ghimire/DevSecOps-FullJavaPipeline.git
+    targetRevision: dev-environment
+    path: infra/monitoring/prometheus-stack
     helm:
       valueFiles:
         - values-dev.yaml
-    directory:
-      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: dev-monitoring-logging
