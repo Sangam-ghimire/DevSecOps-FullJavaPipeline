@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-javaapp
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/managed-by: argocd
+    argocd.argoproj.io/manifest-generate-paths: helm/demo-javaapp
+    # argocd.argoproj.io/sync-options: CreateNamespace=true 
+spec:
+  project: demo-javaapp-dev
+  source:
+    repoURL: https://github.com/Sangam-ghimire/DevSecOps-FullJavaPipeline.git
+    targetRevision: dev-environment
+    path: helm/demo-javaapp
+    helm:
+      valueFiles:
+        - values-dev.yaml 
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

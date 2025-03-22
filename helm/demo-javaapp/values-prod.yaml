@@ -1,13 +1,12 @@
-# values.yaml
-replicaCount: 1
+replicaCount: 3
 
 image:
-  repository: sangamghimire/demo-javaapp-optimized
-  tag: prod-1.0.0
+  repository: sangamghimire/demo-javaapp
+  tag: prod-1.0.36
   pullPolicy: Always
 
 service:
-  type: NodePort
+  type: LoadBalancer
   port: 8080
   targetPort: 8080
 
@@ -15,7 +14,7 @@ ingress:
   enabled: false  # Set to true if using ingress in cloud
 
 serviceAccount:
-  create: false  # Disable service account creation if not needed
+  create: true  # Disable service account creation if not needed
 
 autoscaling:
   enabled: true
@@ -25,28 +24,26 @@ autoscaling:
   targetMemoryUtilizationPercentage: 80  # Optional, for memory-based autoscaling
 
 livenessProbe:
-  enabled: true
   httpGet:
-    path: /healthz
-    port: http
+    path: /actuator/health
+    port: 8080
   initialDelaySeconds: 5
   periodSeconds: 10
 
 readinessProbe:
-  enabled: true
   httpGet:
-    path: /readyz
-    port: http
+    path: /actuator/health
+    port: 8080
   initialDelaySeconds: 3
   periodSeconds: 5
 
 startupProbe:
-  enabled: true
   httpGet:
-    path: /startup
-    port: http
+    path: /actuator/health
+    port: 8080
   failureThreshold: 30
   periodSeconds: 5
+
 
 createNamespace: false
 namespace: prod

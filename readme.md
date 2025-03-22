@@ -43,10 +43,10 @@ DevSecOps-FullJavaPipeline/
 ✅ **Prometheus & Grafana** for real-time monitoring
 ✅ **Kubernetes RBAC & IAM** for secure access control
 
-Ongoing works:
-✅ use of 'karpenter'
-✅ Security of SupplyChain
-✅ Use of Kustomize
-✅ Domain Controller/Ingress with domain integration
+### **Ongoing works:**
+✅ **use of 'karpenter'**
+✅ **Security of SupplyChain**
+✅ **Use of Kustomize**
+✅ **Domain Controller/Ingress with domain integration**
 
 ![Alt Text](Workflow.jpg)
