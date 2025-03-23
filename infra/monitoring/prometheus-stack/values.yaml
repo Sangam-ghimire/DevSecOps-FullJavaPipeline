@@ -48,17 +48,16 @@ grafana:
     datasources:
       - name: Prometheus
         type: prometheus
-        url: http://prometheus-stack-dev-kube-prometheus.dev-monitoring-logging.svc.cluster.local:9090
+        url: http://prometheus-stack-kube-prometheus.monitoring-logging.svc.cluster.local:9090
         access: proxy
         isDefault: true
 
     additionalDataSources:
-    - name: Loki
-      type: loki
-      access: proxy
-      url: http://loki-stack-dev.dev-monitoring-logging.svc.cluster.local:3100
-      isDefault: false
-
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://loki-stack.monitoring-logging.svc.cluster.local:3100
+        isDefault: false
 
 
 prometheus:
