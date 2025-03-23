@@ -1,17 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: k8s-resources
+  name: prometheus-stack
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/Sangam-ghimire/DevSecOps-FullJavaPipeline.git
     targetRevision: main
-    path: k8s
+    path: infra/monitoring/prometheus-stack
+    helm:
+      valueFiles:
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: dev-monitoring-logging
   syncPolicy:
     automated:
       prune: true
