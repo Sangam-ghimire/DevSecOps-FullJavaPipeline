@@ -13,3 +13,5 @@ grafana:
     java-app-dashboard:
       java-app-dashboard.json: |-
         {{ .Files.Get "infra/monitoring/grafana-dashboards/java-app-dashboard.json" | indent 8 }}
+
+
