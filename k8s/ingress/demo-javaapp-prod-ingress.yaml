@@ -5,8 +5,13 @@ metadata:
   namespace: prod
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - app-prod.cloudandcosmos.com
+      secretName: demo-javaapp-prod-tls
   rules:
     - host: app-prod.cloudandcosmos.com
       http:

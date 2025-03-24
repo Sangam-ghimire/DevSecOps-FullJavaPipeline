@@ -5,8 +5,13 @@ metadata:
   namespace: dev
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - app-dev.cloudandcosmos.com
+      secretName: demo-javaapp-dev-tls
   rules:
     - host: app-dev.cloudandcosmos.com
       http:
@@ -17,4 +22,4 @@ spec:
               service:
                 name: demo-javaapp-dev    
                 port:
-                  number: 80              
+                  number: 80

@@ -6,6 +6,7 @@ resources:
   - ingress/argocd-ingress.yaml
   - ingress/demo-javaapp-dev-ingress.yaml
   - ingress/demo-javaapp-prod-ingress.yaml
+  - cert-manager/cluster-issuer.yaml
 
   
 
