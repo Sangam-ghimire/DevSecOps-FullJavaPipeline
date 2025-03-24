@@ -8,6 +8,7 @@ resources:
   - ingress/demo-javaapp-prod-ingress.yaml
   - cert-manager/cluster-issuer.yaml
   - namespaces/shared/cert-manager.yaml
-
+  - ingress/grafana-ingress.yaml
+  
   
 
