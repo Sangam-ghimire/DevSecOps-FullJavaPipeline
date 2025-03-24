@@ -58,6 +58,7 @@ DevSecOps-FullJavaPipeline/
 -  Creates VPC, EKS, IAM roles, node groups etc. using modules in Terraform
 
 ### 4.  **Monitoring Stack (Prometheus, Grafana, Loki)**
+
 -  Deployed via Helm and ArgoCD 
 -  Loki + promtail for logs, Prometheus for metrics
 -  Dashboards in Grafana for CPU usage and logs
@@ -71,7 +72,7 @@ DevSecOps-FullJavaPipeline/
 
 ### 6.  **Docker Image Optimization**
 
--  Multistage Docker build 
+-  Multistage Docker build åç
 -  Small base image 
 -  Only necessary files copied
 
@@ -118,68 +119,7 @@ DevSecOps-FullJavaPipeline/
 - Probes prevent bad containers from receiving traffic
 
 ---
-=======
 
--  Deployed via Helm and ArgoCD 
--  Loki + promtail for logs, Prometheus for metrics
--  Dashboards in Grafana for CPU usage and logs
-
-### 5.  **Horizontal Pod Autoscaling (HPA)**
-
--  Configured in Helm
--  CPU and memory-based autoscaling
--  Resource requests and limits optimized
--  Clean logic using Helm conditionals
-
-### 6.  **Docker Image Optimization**
-
--  Multistage Docker build 
--  Small base image 
--  Only necessary files copied
-
-### 7.  **Security & High Availability**
-
--  HPA ensures scalability
--  Multiple replicas + probes = HA
--  Node pool auto-scaling via EKS
--  Can include `network policies` and `RBAC` if required
-
----
-
-## 🛠️ Custom Configuration / Scripts
-
-- Utility Script
-
----
-
-## 📦 CI/CD Pipeline Flow
-
-1. **Developer pushes code** to GitHub
-2. **GitHub Actions** builds JAR, builds/pushes Docker image (tests can also be added)
-3. ArgoCD watches Git repo for manifest changes
-4. ArgoCD syncs Helm release to EKS
-5. Prometheus/Grafana collects metrics, HPA auto-scales if needed
-
----
-
-## 📊 Monitoring & Observability
-
-- **Grafana Dashboards:**
-  - Logs (Loki)
-  - CPU usage per pod (Prometheus)
-- **Alertmanager** configured for basic alerts
-- **Prometheus Node Exporter** deployed via `kube-prometheus-stack`
-
----
-
-## 🔐 Security Considerations
-
-- RBAC policies for ArgoCD and workloads
-- ServiceAccounts for Prometheus/Grafana
-- Docker image with limited layers
-- Probes prevent bad containers from receiving traffic
-
----
 ## Deployment URLs
 
 - https://argocd.cloudandcosmos.com
