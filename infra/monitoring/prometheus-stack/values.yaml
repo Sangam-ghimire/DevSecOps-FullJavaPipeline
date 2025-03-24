@@ -1,29 +1,25 @@
 grafana:
   enabled: true
   adminPassword: admin
-  service:
-    type: LoadBalancer
 
   dashboards:
-    java-app:
+    javaapp-logs-cpu:
       json: |
         {
-          "title": "JavaApp - Logs & CPU",
           "uid": "javaapp-logs-cpu",
+          "title": "JavaApp Logs & CPU",
           "timezone": "browser",
           "panels": [
             {
               "type": "logs",
-              "title": "Logs - demo-javaapp",
+              "title": "App Logs",
               "datasource": "Loki",
               "targets": [
                 {
                   "expr": "{app=\"demo-javaapp\"}"
                 }
               ],
-              "gridPos": {
-                "h": 8, "w": 24, "x": 0, "y": 0
-              }
+              "gridPos": { "x": 0, "y": 0, "w": 24, "h": 8 }
             },
             {
               "type": "timeseries",
@@ -31,12 +27,10 @@ grafana:
               "datasource": "Prometheus",
               "targets": [
                 {
-                  "expr": "sum(rate(container_cpu_usage_seconds_total{container!=\"\",pod=~\"demo-javaapp.*\"}[5m]))"
+                  "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"demo-javaapp.*\", container!=\"\"}[5m]))"
                 }
               ],
-              "gridPos": {
-                "h": 8, "w": 24, "x": 0, "y": 8
-              }
+              "gridPos": { "x": 0, "y": 8, "w": 24, "h": 8 }
             }
           ],
           "schemaVersion": 30,
