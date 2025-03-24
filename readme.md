@@ -118,3 +118,11 @@ DevSecOps-FullJavaPipeline/
 - Probes prevent bad containers from receiving traffic
 
 ---
+
+## Deployment URLs
+
+- https://argocd.cloudandcosmos.com
+
+- https://app-dev.cloudandcosmos.com
+
+- https://app-prod.cloudandcosmos.com
