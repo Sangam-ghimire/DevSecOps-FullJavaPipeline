@@ -18,7 +18,7 @@ serviceAccount:
 
 autoscaling:
   enabled: true
-  minReplicas: 2
+  minReplicas: 1
   maxReplicas: 5
   targetCPUUtilizationPercentage: 75
   targetMemoryUtilizationPercentage: 80  # Optional, for memory-based autoscaling
@@ -48,3 +48,10 @@ startupProbe:
 createNamespace: false
 namespace: prod
 
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
