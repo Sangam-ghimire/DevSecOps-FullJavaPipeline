@@ -2,7 +2,11 @@ apiVersion: v2
 name: loki-stack-wrapper
 description: Loki logging stack GitOps wrapper
 type: application
+<<<<<<< HEAD
+version: 0.1.2
+=======
 version: 0.1.8
+>>>>>>> main
 appVersion: "2.9.0"
 dependencies:
   - name: loki-stack
