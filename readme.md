@@ -1,52 +1,121 @@
-# DevSecOps-FullJavaPipeline
+# DevSecOps Java Spring Boot CI/CD Project
 
-## 🚀 Project Overview
-This project automates the deployment of a **Java-based application** using **Terraform, Kubernetes, Helm, Docker, and ArgoCD**. It incorporates **Prometheus and Grafana** for **continuous monitoring** and **GitHub Actions** for **continuous integration **.
+**Tech Stacks:** Java Spring Boot, Docker, GitHub Actions, ArgoCD, Helm, Kubernetes (EKS), Terraform, Prometheus, Grafana, Loki, HPA
+
 ---
 
-## 🏗️ Infrastructure as Code (IaC) with Terraform
-The entire infrastructure is provisioned using **Terraform** to manage both **Dev** and **Prod** clusters, ensuring reproducibility and infrastructure consistency.
+## 📁 Project Structure
 
-### **📂 Directory Structure**
 ```
 DevSecOps-FullJavaPipeline/
-│── terraform/
-│   ├── modules/
-│   │   ├── eks/
-│   │   ├── vpc/
-│   ..........
-│   ├── dev/
-│   ├── prod/
-│── helm/
-│   ├── demo-javaapp/
-│── demo-javaapp/
-│── k8s/
-│   ├── monitoring-gitops/
-│   ├── java-app-gitops/
-│   .......
-│── README.md
+├── .github/                     #CI pipelines using github-actions
+├── argocd/                      # App of Apps setup for ArgoCD
+│   ├── applications/
+│   │   ├── dev/
+│   │   ├── prod/
+│   │   └── shared/
+│   └── ...(root-app-(evn).yaml) 
+├── demo-javaapp/                # Source code of applicaiton
+├── helm/                        # Helm charts for the app
+│   └── demo-javaapp/
+├── k8s/                        # Additional K8s configs (namespaces etc)
+|   └── namespaces/
+|   └── kustomization.yaml/                        
+├── infra/                       # Logging Monitoring, GitOps based Setup
+│   └── logging/
+│   └── monitoring/
+│   
+├── terraform/                   # Common terraform backend config
+├── scripts/                     # Utility / automation scripts
+├── demo-javaapp/                # Java Spring Boot source code
+└── README.md                    # Project documentation
 ```
 
 ---
 
-## 📦 Deployment Stack & Key Features
-### **🔹 Infrastructure & Cluster Management**
-✅ **Terraform** for provisioning Kubernetes clusters and networking
-✅ **Helm** for managing Kubernetes applications
-✅ **Kubernetes (EKS)** for container orchestration
+## Requirements Checklist
 
-### **🔹 CI/CD & GitOps**
-✅ **GitHub Actions** for automated build and CI
-✅ **ArgoCD** for continuous delivery and GitOps management
+### 1. **CI/CD Pipeline (GitHub Actions + ArgoCD)**
 
-### **🔹 Monitoring & Security**
-✅ **Prometheus & Grafana** for real-time monitoring
-✅ **Kubernetes RBAC & IAM** for secure access control
+-  CI builds and tests the Spring Boot app
+-  Docker image is built and pushed to DockerHub/GHCR
+-  ArgoCD automatically syncs Kubernetes manifests from Git
+-  App-of-apps pattern used for managing environments
 
-### **Ongoing works:**
-✅ **use of 'karpenter'**
-✅ **Security of SupplyChain**
-✅ **Use of Kustomize**
-✅ **Domain Controller/Ingress with domain integration**
+**CI file:**
+- `.github/workflows/(filename).yaml`
 
-![Alt Text](Workflow.jpg)
+### 2.  **Kubernetes Deployment via Helm**
+
+-  Helm chart under `helm/demo-javaapp`
+-  Values managed per environment (`values-dev.yaml`, `values-prod.yaml`)
+-  Liveness, readiness, and startup probes configured
+
+### 3.  **Terraform Infrastructure**
+
+-  Separate folders (ArgoCD is also configured using Terraform)
+-  Uses `backend s3` and `dynamodb` locking
+-  Creates VPC, EKS, IAM roles, node groups etc. using modules in Terraform
+
+### 4.  **Monitoring Stack (Prometheus, Grafana, Loki)**
+
+-  Deployed via Helm and ArgoCD 
+-  Loki + promtail for logs, Prometheus for metrics
+-  Dashboards in Grafana for CPU usage and logs
+
+### 5.  **Horizontal Pod Autoscaling (HPA)**
+
+-  Configured in Helm
+-  CPU and memory-based autoscaling
+-  Resource requests and limits optimized
+-  Clean logic using Helm conditionals
+
+### 6.  **Docker Image Optimization**
+
+-  Multistage Docker build 
+-  Small base image 
+-  Only necessary files copied
+
+### 7.  **Security & High Availability**
+
+-  HPA ensures scalability
+-  Multiple replicas + probes = HA
+-  Node pool auto-scaling via EKS
+-  Can include `network policies` and `RBAC` if required
+
+---
+
+## 🛠️ Custom Configuration / Scripts
+
+- Utility Script
+
+---
+
+## 📦 CI/CD Pipeline Flow
+
+1. **Developer pushes code** to GitHub
+2. **GitHub Actions** builds JAR, builds/pushes Docker image (tests can also be added)
+3. ArgoCD watches Git repo for manifest changes
+4. ArgoCD syncs Helm release to EKS
+5. Prometheus/Grafana collects metrics, HPA auto-scales if needed
+
+---
+
+## 📊 Monitoring & Observability
+
+- **Grafana Dashboards:**
+  - Logs (Loki)
+  - CPU usage per pod (Prometheus)
+- **Alertmanager** configured for basic alerts
+- **Prometheus Node Exporter** deployed via `kube-prometheus-stack`
+
+---
+
+## 🔐 Security Considerations
+
+- RBAC policies for ArgoCD and workloads
+- ServiceAccounts for Prometheus/Grafana
+- Docker image with limited layers
+- Probes prevent bad containers from receiving traffic
+
+---
