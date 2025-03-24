@@ -133,7 +133,7 @@ DevSecOps-FullJavaPipeline/
 
 ### 6.  **Docker Image Optimization**
 
--  Multistage Docker build 
+-  Multistage Docker build åç
 -  Small base image 
 -  Only necessary files copied
 
