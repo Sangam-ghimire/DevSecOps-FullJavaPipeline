@@ -3,6 +3,9 @@ resources:
   - namespaces/prod/prod-namespace.yaml
   - namespaces/shared/monitoring-logging.yaml
   - namespaces/shared/ingress-nginx.yaml
-  
+  - ingress/argocd-ingress.yaml
+  - ingress/demo-javaapp-dev-ingress.yaml
+  - ingress/demo-javaapp-prod-ingress.yaml
+
   
 
