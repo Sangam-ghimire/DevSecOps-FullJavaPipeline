@@ -25,7 +25,7 @@ DevSecOps-FullJavaPipeline/
 │   └── logging/
 │   └── monitoring/
 │   
-├── terraform/                   # Common terraform backend config
+├── terraform/                   # Common terraform 
 ├── scripts/                     # Utility / automation scripts
 ├── demo-javaapp/                # Java Spring Boot source code
 └── README.md                    # Project documentation
