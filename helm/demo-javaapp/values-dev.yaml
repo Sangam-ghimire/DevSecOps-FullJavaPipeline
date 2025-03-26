@@ -42,6 +42,7 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 3
   targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 75
 
 createNamespace: false
 namespace: dev
